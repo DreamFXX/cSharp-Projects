@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "mathGameValidation6": {
+      "commandName": "Project",
+      "sqlDebugging": false
+    }
+  }
+}
