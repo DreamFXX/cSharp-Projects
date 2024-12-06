@@ -1,2 +1,4 @@
 # All Projects Started/Made
-Through roadmap of learning C# lang.
+
+There are all project i did through Roadmap of Learning **C#** lang.
+Most of the projects are practice projects from csharp-academy.com
