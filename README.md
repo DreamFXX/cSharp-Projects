@@ -1,6 +1,6 @@
-<<<<<<< HEAD
-# All Projects Started/Made
+# Repository of every project I made
 
-There are all project i did through Roadmap of Learning **C#** lang.
+There are all projects I did through my learning of **C#** language.
 
-Most of the projects are practice projects from csharp-academy.com
+Most of the projects are practice projects from <https://csharp-academy.com>
+Thanks, Academy! Awesome entertainment and knowledge!
