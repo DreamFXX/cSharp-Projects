@@ -52,16 +52,16 @@ internal class Program
                     closeApp = true;
                     break;
                 case '1':
-                    ViewAllData();
+                    //ViewAllData();
                     break;
                 case '2':
-                    InsertNewRecord();
+                    //InsertNewRecord();
                     break;
                 case '3':
-                    UpdateRecord();
+                    //UpdateRecord();
                     break;
                 case '4':
-                    DeleteRecord();
+                    //DeleteRecord();
                     break;
                 default:
                     Console.WriteLine("\nInvalid input! Try Again.");
