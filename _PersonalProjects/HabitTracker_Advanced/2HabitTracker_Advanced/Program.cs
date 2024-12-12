@@ -6,17 +6,18 @@ namespace _2HabitTracker_Advanced;
 
 internal class Program
 {
-    private static string? connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
+    private static readonly string? connectionString = ConfigurationManager.ConnectionStrings["DefaultCnn"].ConnectionString;
     private static string tableName = "Specified_HabitTracker";
 
     public static void Main(string[] args)
     {
         int approvedConn = RunNonQueryOnDatabase(@$"CREATE TABLE IF NOT EXISTS Habit_Records (
-                                                           Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                           HabitName TEXT,
-                                                           Quantity REAL,
-                                                           Unit TEXT,
-                                                           DateAndTime TEXT)");
+                                                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                                                            HabitName TEXT NOT NULL,
+                                                            DateAndTime TEXT,
+                                                            Quantity REAL,
+                                                            Unit TEXT NOT NULL
+                                                            )");
 
         if (approvedConn != 0)
         {
