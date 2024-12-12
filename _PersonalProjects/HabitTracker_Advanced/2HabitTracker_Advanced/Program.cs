@@ -9,12 +9,14 @@ internal class Program
     private static string? connectionString = ConfigurationManager.ConnectionStrings["Default"].ConnectionString;
     private static string tableName = "Specified_HabitTracker";
 
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        int approvedConn = RunNonQueryOnDatabase(@$"CREATE TABLE IF NOT EXISTS {tableName} (
+        int approvedConn = RunNonQueryOnDatabase(@$"CREATE TABLE IF NOT EXISTS Habit_Records (
                                                            Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                                           DateAndTime TEXT,
-                                                           Quantity INTEGER)");
+                                                           HabitName TEXT,
+                                                           Quantity REAL,
+                                                           Unit TEXT,
+                                                           DateAndTime TEXT)");
 
         if (approvedConn != 0)
         {
@@ -71,6 +73,10 @@ internal class Program
             Console.ReadKey();
             Console.Clear();
         }
+    }
+
+    public void InitDatabase()
+    {
 
     }
 
@@ -88,4 +94,3 @@ internal class Program
         return result;
     }
 }
-
