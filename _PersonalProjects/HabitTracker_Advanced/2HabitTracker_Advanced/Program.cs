@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.SQLite;
 using _2HabitTracker_Advanced.Models;
+using Microsoft.VisualBasic;
 
 namespace _2HabitTracker_Advanced;
 
@@ -61,7 +62,7 @@ internal class Program
                     closeApp = true;
                     break;
                 case '1':
-                    //ViewAllData();
+                    ViewAllRecords();
                     break;
                 case '2':
                     //InsertNewRecord();
@@ -133,6 +134,46 @@ internal class Program
     //
     private static void ViewAllRecords()
     {
+        Console.Clear();
 
+        Console.WriteLine("- All Records List -\n");
+        string commandText = $"SELECT * FROM {tableName}";
+
+        using var connection = new SQLiteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = commandText;
+
+        List<Habit> habits = new();
+        var reader = command.ExecuteReader();
+
+        if (reader.HasRows)
+        { 
+            while (reader.Read())
+            {
+                habits.Add(new Habit
+                {
+                    Id = reader.GetInt32(0),
+                    HabitName = reader.GetString(1),
+                    DateAndTime = DateTime.ParseExact(reader.GetString(2), "yy-MM-dd HH:mm", CultureInfo.InvariantCulture,DateTimeStyles.None),
+                    Quantity = reader.GetDouble(3),
+                    Unit = reader.GetString(4),
+                });
+            }
+        }
+        else
+        {
+            Console.WriteLine("No records stored in this Application. Start logging your habits!");
+        }
+
+        connection.Close();
+
+        Console.WriteLine("---------------------------------------");
+
+        foreach (var habit in habits)
+        {
+            Console.WriteLine($"Date and Time -> {habit.DateAndTime} you did {habit.HabitName}! info: Quantity = {habit.Quantity}{habit.Unit}");
+        }
     }
 }
