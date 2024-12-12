@@ -9,9 +9,9 @@ internal class Program
     private static readonly string? connectionString = ConfigurationManager.ConnectionStrings["DefaultCnn"].ConnectionString;
     private static string tableName = "Specified_HabitTracker";
 
-    public static void Main(string[] args)
+    static void Main(string[] args)
     {
-        int approvedConn = RunNonQueryOnDatabase(@$"CREATE TABLE IF NOT EXISTS Habit_Records (
+        int approvedConn = RunNonQueryOnDatabase(@$"CREATE TABLE IF NOT EXISTS {tableName} (
                                                             Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                                             HabitName TEXT NOT NULL,
                                                             DateAndTime TEXT,
@@ -21,7 +21,7 @@ internal class Program
 
         if (approvedConn != 0)
         {
-            Console.WriteLine($"System was unable to create specified database. Please try again.\n\n");
+            Console.WriteLine($"System was unable to create specified database. Check program configuration and try again!\n\n");
             Console.ReadKey();
             return;
         }
@@ -76,11 +76,7 @@ internal class Program
         }
     }
 
-    public void InitDatabase()
-    {
-
-    }
-
+    // Database SubOperations section.
     public static int RunNonQueryOnDatabase(string commandText)
     {
         using var connection = new SQLiteConnection(connectionString);
@@ -93,5 +89,12 @@ internal class Program
         connection.Close();
 
         return result;
+    }
+
+    private static int CheckDatabaseForRecord(string date) 
+        /* Check if a record with the given date exists in the database
+        * Return 1 if the record exists, 0 if it does not */
+    {
+        return 0;
     }
 }
