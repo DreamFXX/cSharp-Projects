@@ -1,13 +1,14 @@
-﻿using System.Configuration;
-using _2HabitTracker_Advanced.Models;
-using System.Globalization;
+﻿using System.Globalization;
+using System.Configuration;
 using System.Data.SQLite;
+using _2HabitTracker_Advanced.Models;
+
 namespace _2HabitTracker_Advanced;
 
 internal class Program
 {
     private static readonly string? connectionString = ConfigurationManager.ConnectionStrings["DefaultCnn"].ConnectionString;
-    private static string tableName = "Specified_HabitTracker";
+    private static string tableName = "Table_HabitTracker";
 
     static void Main(string[] args)
     {
@@ -25,6 +26,10 @@ internal class Program
             Console.ReadKey();
             return;
         }
+        else
+        {
+            Console.WriteLine("Database was created successfully.");
+        }
 
         ShowMenu();
     }
@@ -36,8 +41,9 @@ internal class Program
         bool closeApp = false;
         while (closeApp == false)
         {
-            Console.WriteLine("\n\nWELCOME TO HABIT TRACKER - ADVANCED");
-            Console.WriteLine("\nWhat would you like to do?");
+            Console.WriteLine("------------------------------");
+            Console.WriteLine("WELCOME TO HABIT TRACKER - ADVANCED");
+            Console.WriteLine("\nPick an operation that you want to do:");
             Console.WriteLine("\n0. Close Application");
             Console.WriteLine("1. View All Records");
             Console.WriteLine("2. Add New Record");
@@ -51,7 +57,7 @@ internal class Program
             switch (userChoice.KeyChar)
             {
                 case '0':
-                    Console.WriteLine("Have a good day! Application will be closed.");
+                    Console.WriteLine("Thanks for using our advanced Habit Tracker! Goodbye.");
                     closeApp = true;
                     break;
                 case '1':
@@ -67,7 +73,7 @@ internal class Program
                     //DeleteRecord();
                     break;
                 default:
-                    Console.WriteLine("\nInvalid input! Try Again.");
+                    Console.WriteLine("\nYou entered invalid symbol or number! Try again.");
                     break;
             }
             Console.WriteLine("\nPress any key to continue.");
@@ -91,10 +97,42 @@ internal class Program
         return result;
     }
 
+    /* Check if a record with the given date exists in the database
+     * Return 1 if the record exists, 0 if it does not [By Date]*/
     private static int CheckDatabaseForRecord(string date) 
-        /* Check if a record with the given date exists in the database
-        * Return 1 if the record exists, 0 if it does not */
     {
-        return 0;
+        using var connection = new SQLiteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = $"SELECT EXISTS(SELECT 1 FROM {tableName} WHERE DateAndTime = '{date}'";
+        int query = Convert.ToInt32(command.ExecuteScalar());
+
+        connection.Close();
+
+        return query;
+    }
+
+    // By ID of record
+    private static int CheckDatabaseForRecord(int id)
+    {
+        using var connection = new SQLiteConnection(connectionString);
+        connection.Open();
+
+        var command = connection.CreateCommand();
+        command.CommandText = $"SELECT EXISTS(SELECT 1 FROM {tableName} WHERE Id = '{id}'";
+        int query = Convert.ToInt32(command.ExecuteScalar());
+
+        connection.Close();
+
+        return query;
+    }
+
+    //
+    // Program operations (Controllers)
+    //
+    private static void ViewAllRecords()
+    {
+
     }
 }
