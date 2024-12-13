@@ -1,9 +1,9 @@
 ﻿using System.Globalization;
 using System.Configuration;
 using System.Data.SQLite;
-using _2HabitTracker_Advanced.Models;
+using HabitTracker_Advanced.Models;
 
-namespace _2HabitTracker_Advanced;
+namespace HabitTracker_Advanced;
 
 internal class Program
 {
@@ -17,7 +17,7 @@ internal class Program
         int approvedConn = RunNonQueryOnDatabase(@$"CREATE TABLE IF NOT EXISTS {tableName} (
                                                             Id INTEGER PRIMARY KEY AUTOINCREMENT,
                                                             HabitName TEXT NOT NULL,
-                                                            DateAndTime TEXT,
+                                                            DateAndTime TEXT NOT NULL,
                                                             Quantity REAL,
                                                             Unit TEXT NOT NULL
                                                             )");
@@ -180,14 +180,23 @@ internal class Program
     }
 
     private static void InsertNewRecord()
+        /* Insert a new record into the database
+         * Prompt the user for a date and quantity of water drank, then insert the record into the database
+         * If a record with the given date already exists, display a message and prompt for a different date
+         * If the user enters 0 for the date or quantity, return to the main menu */
     {
         Console.Clear();
+        Console.WriteLine("\nAdd new record");
+        Console.WriteLine("------------------------------");
 
         string? dateInput = GetDate();
         double quantityInput =
         GetQuantity(
             "Enter the quantity of your habit length, dose or anything in any unit you want.\n(Next page is filling the measurement type.)");
-        string? unitInput = GetUnit();
+
+        int records = 1;
+        string date = null;
+
     }
     //
     //
@@ -211,7 +220,7 @@ internal class Program
             validDate = DateTime.TryParseExact(userInput, "yy-MM-dd HH:mm", CultureInfo.InvariantCulture,
                 DateTimeStyles.None, out date);
 
-            if (validDate == true) 
+            if (validDate == true)
                 break;
 
         }
@@ -240,10 +249,4 @@ internal class Program
         return quantity;
     }
 
-    //private static string GetUnit()
-    //{
-    //    Console.WriteLine("Enter the unit of your habit length, dose or anything in any unit you want.");
-    //    var userInput = Console.ReadLine();
-    //    return userInput;
-    //}
 }

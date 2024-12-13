@@ -1,9 +1,9 @@
-﻿namespace _2HabitTracker_Advanced.Models;
+﻿namespace HabitTracker_Advanced.Models;
 
 public class Habit
 {
     public int Id { get; set; }
-    
+
     public string? HabitName { get; set; }
 
     public DateTime DateAndTime { get; set; }
