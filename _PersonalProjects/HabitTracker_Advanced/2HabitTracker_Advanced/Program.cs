@@ -2,13 +2,14 @@
 using System.Configuration;
 using System.Data.SQLite;
 using _2HabitTracker_Advanced.Models;
-using Microsoft.VisualBasic;
 
 namespace _2HabitTracker_Advanced;
 
 internal class Program
 {
-    private static readonly string? connectionString = ConfigurationManager.ConnectionStrings["DefaultCnn"].ConnectionString;
+    private static readonly string? connectionString =
+        ConfigurationManager.ConnectionStrings["DefaultCnn"].ConnectionString;
+
     private static string tableName = "Table_HabitTracker";
 
     static void Main(string[] args)
@@ -23,7 +24,8 @@ internal class Program
 
         if (approvedConn != 0)
         {
-            Console.WriteLine($"System was unable to create specified database. Check program configuration and try again!\n\n");
+            Console.WriteLine(
+                $"System was unable to create specified database. Check program configuration and try again!\n\n");
             Console.ReadKey();
             return;
         }
@@ -35,7 +37,7 @@ internal class Program
         ShowMenu();
     }
 
-    static void ShowMenu()
+    private static void ShowMenu()
     {
         Console.Clear();
 
@@ -65,7 +67,7 @@ internal class Program
                     ViewAllRecords();
                     break;
                 case '2':
-                    //InsertNewRecord();
+                    InsertNewRecord();
                     break;
                 case '3':
                     //UpdateRecord();
@@ -77,6 +79,7 @@ internal class Program
                     Console.WriteLine("\nYou entered invalid symbol or number! Try again.");
                     break;
             }
+
             Console.WriteLine("\nPress any key to continue.");
             Console.ReadKey();
             Console.Clear();
@@ -98,9 +101,8 @@ internal class Program
         return result;
     }
 
-    /* Check if a record with the given date exists in the database
-     * Return 1 if the record exists, 0 if it does not [By Date]*/
-    private static int CheckDatabaseForRecord(string date) 
+    //[By Date]
+    private static int CheckDatabaseForRecord(string date)
     {
         using var connection = new SQLiteConnection(connectionString);
         connection.Open();
@@ -149,14 +151,15 @@ internal class Program
         var reader = command.ExecuteReader();
 
         if (reader.HasRows)
-        { 
+        {
             while (reader.Read())
             {
                 habits.Add(new Habit
                 {
                     Id = reader.GetInt32(0),
                     HabitName = reader.GetString(1),
-                    DateAndTime = DateTime.ParseExact(reader.GetString(2), "yy-MM-dd HH:mm", CultureInfo.InvariantCulture,DateTimeStyles.None),
+                    DateAndTime = DateTime.ParseExact(reader.GetString(2), "yy-MM-dd HH:mm",
+                        CultureInfo.InvariantCulture, DateTimeStyles.None),
                     Quantity = reader.GetDouble(3),
                     Unit = reader.GetString(4),
                 });
@@ -169,11 +172,78 @@ internal class Program
 
         connection.Close();
 
-        Console.WriteLine("---------------------------------------");
-
         foreach (var habit in habits)
         {
-            Console.WriteLine($"Date and Time -> {habit.DateAndTime} you did {habit.HabitName}! info: Quantity = {habit.Quantity}{habit.Unit}");
+            Console.WriteLine(
+                $"In Date and Time -> {habit.DateAndTime} you did {habit.HabitName} habit routine! info: Quantity = {habit.Quantity}{habit.Unit}");
         }
     }
+
+    private static void InsertNewRecord()
+    {
+        Console.Clear();
+
+        string? dateInput = GetDate();
+        double quantityInput =
+        GetQuantity(
+            "Enter the quantity of your habit length, dose or anything in any unit you want.\n(Next page is filling the measurement type.)");
+        string? unitInput = GetUnit();
+    }
+    //
+    //
+    // Get Date and Quantity section
+    private static string GetDate()
+    {
+        bool validDate = false;
+        DateTime date = new();
+        while (validDate == false)
+        {
+            Console.WriteLine("Quick actions -> Type 0 to go back to the menu // Type 1 to set date to today.");
+            Console.WriteLine(
+                "Enter the date of your habit record in the format below.\n- (yy-MM-dd HH:mm)\n\nDate and Time:");
+            var userInput = Console.ReadLine();
+
+            if (userInput == "0")
+                return "0";
+            if (userInput == "1")
+                return DateTime.Now.ToString("yy-MM-dd HH:mm");
+
+            validDate = DateTime.TryParseExact(userInput, "yy-MM-dd HH:mm", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out date);
+
+            if (validDate == true) 
+                break;
+
+        }
+        return date.ToString("yy-MM-dd HH:mm");
+    }
+
+    private static double GetQuantity(string message)
+    {
+        Console.WriteLine(message);
+        var userInput = Console.ReadLine();
+        double quantity = -1;
+        bool isValid = false;
+
+        while (isValid == false)
+        {
+            string? input = Console.ReadLine();
+            if (double.TryParse(input, out quantity) && quantity >= 0)
+            {
+                isValid = true;
+            }
+            else
+            {
+                Console.WriteLine("Unfortunately, number is not valid. It must be positive number.");
+            }
+        }
+        return quantity;
+    }
+
+    //private static string GetUnit()
+    //{
+    //    Console.WriteLine("Enter the unit of your habit length, dose or anything in any unit you want.");
+    //    var userInput = Console.ReadLine();
+    //    return userInput;
+    //}
 }
