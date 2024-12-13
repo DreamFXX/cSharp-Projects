@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "2HabitTracker_Advanced": {
-      "commandName": "Project",
-      "workingDirectory": "C:\\Users\\marti\\_cSharpProjects\\_PersonalProjects\\HabitTracker_Advanced\\HabitTracker_Advanced",
-      "nativeDebugging": false
-    }
-  }
-}
