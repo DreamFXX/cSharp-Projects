@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "CoffeeShop_EFCoreCrashCourse": {
-      "commandName": "Project",
-      "nativeDebugging": false,
-      "sqlDebugging": true
-    }
-  }
-}
