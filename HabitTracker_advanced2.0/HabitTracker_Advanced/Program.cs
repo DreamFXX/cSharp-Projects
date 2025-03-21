@@ -5,12 +5,11 @@ using HabitTracker_Advanced.Models;
 
 namespace HabitTracker_Advanced;
 
-internal class Program
+public class Program
 {
     private static readonly string? connectionString =
         ConfigurationManager.ConnectionStrings["DefaultCnn"].ConnectionString;
 
-    //?!
     private static readonly string? tableName = "Table_HabitTracker";
 
     private static void Main(string[] args)
@@ -215,12 +214,12 @@ internal class Program
 
         var commandText =
                 $"INSERT INTO {tableName} (HabitName, DateAndTime, Quantity) VALUES ('{habitName}', '{date}', {quantityInput})";
-            int success = RunNonQueryOnDatabase(commandText);
+        int success = RunNonQueryOnDatabase(commandText);
 
-            if (success == 0)
-                Console.WriteLine("Record was not added to the database.\n");
-            else
-                Console.WriteLine("Record has been added!\n\n");
+        if (success == 0)
+            Console.WriteLine("Record was not added to the database.\n");
+        else
+            Console.WriteLine("Record has been added!\n\n");
     }
 
     private static void UpdateRecord()
@@ -271,14 +270,14 @@ internal class Program
         Console.Clear();
         ViewAllRecords();
 
-        int id = 
+        int id =
             GetInt("Enter the ID of record that you want to delete from the list above.\n-quick actions -> enter 0 to go back to the menu.\n\nID: ");
         if (id == 0)
         {
             Console.WriteLine("No records were deleted.\n\n");
             return;
         }
-        
+
         int recordExists = CheckDatabaseForRecord(id);
         if (recordExists == 0)
         {
